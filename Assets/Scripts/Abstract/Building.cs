@@ -12,8 +12,8 @@ public abstract class Building : MonoBehaviour
     private Renderer renderer;
 
     public Color color;
-    public Vector3 postition;
-    public Quaternion rotation;
+    public Vector3 position;
+    public Vector3 rotation;
     public string prefabName;
     public int layer;
 
@@ -27,7 +27,7 @@ public abstract class Building : MonoBehaviour
     public virtual void SetPosition(Vector3 position, bool onLoad = false)
     {
         this.transform.position = position;
-        this.postition = position;
+        this.position = position;
     }
 
     public Collider GetCollider()
@@ -51,20 +51,22 @@ public abstract class Building : MonoBehaviour
     {
         renderer.material.SetColor("_Color", this.color);
     }
-    public void SetRotation(Quaternion rotation)
+    public void SetRotation(Vector3 rotation)
     {
-        transform.rotation = rotation;
-        this.rotation = rotation;
+        Debug.Log("Rotation " + rotation);
+        transform.rotation = Quaternion.Euler(rotation);
+        this.rotation = transform.rotation.eulerAngles;
+
     }
     public void SetLayer(int layer)
     {
         this.gameObject.layer = layer;
         this.layer = layer;
     }
-    public void LoadConstructor(Vector3 position, Quaternion rotation, Color color, int layer)
+    public void LoadConstructor(Vector3 position, Vector3 rotation, Color color, int layer)
     {
-        SetPosition(position, true);
         SetRotation(rotation);
+        SetPosition(position, true);
         ApplyColor(color);
         SetLayer(layer);
     }

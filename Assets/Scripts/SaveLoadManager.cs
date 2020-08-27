@@ -30,7 +30,7 @@ public class SaveLoadManager : MonoBehaviour
         foreach (var building in buildings)
         {
             Building temp = Instantiate(Resources.Load<GameObject>("Prefabs/" + building.prefabName)).GetComponent<Building>();
-            temp.LoadConstructor(building.postition, building.rotation, building.GetColor(), building.layer);
+            temp.LoadConstructor(building.position, building.rotation, building.GetColor(), building.layer);
         }
     }
 

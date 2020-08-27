@@ -56,7 +56,7 @@ public class BuildingManager : MonoBehaviour
     public void PreviewBuilding(GameObject selectedBuilding)
     {
         prevObject = Instantiate(selectedBuilding, gameManager.hitPoint, Quaternion.identity).GetComponent<Building>();
-        prevObject.SetRotation(Quaternion.FromToRotation(transform.up, gameManager.faceVector) * transform.rotation);
+        prevObject.SetRotation((Quaternion.FromToRotation(transform.up, gameManager.faceVector) * transform.rotation).eulerAngles);
         buildingSelected = true;
     }
 
@@ -67,7 +67,8 @@ public class BuildingManager : MonoBehaviour
 
         prevObject.SetPosition(gameManager.hitPoint);
         if (prevObject.transform.rotation != Quaternion.FromToRotation(prevObject.transform.up, gameManager.faceVector) * prevObject.transform.rotation)
-            prevObject.SetRotation(Quaternion.FromToRotation(prevObject.transform.up, gameManager.faceVector) * prevObject.transform.rotation);
+            prevObject.SetRotation((Quaternion.FromToRotation(prevObject.transform.up, gameManager.faceVector) * prevObject.transform.rotation).eulerAngles);
+            //prevObject.SetRotation((Quaternion.FromToRotation(prevObject.transform.up, gameManager.faceVector) * prevObject.transform.rotation).eulerAngles);
     }
 
     private void BuildBuilding()
@@ -139,10 +140,12 @@ public class BuildingManager : MonoBehaviour
         if (rotateRight)
         {
             prevObject.transform.Rotate(Vector3.up, 90);
+            prevObject.SetRotation(prevObject.transform.rotation.eulerAngles);
         }
         else
         {
             prevObject.transform.Rotate(Vector3.up, -90);
+            prevObject.SetRotation(prevObject.transform.rotation.eulerAngles);
         }
 
     }
