@@ -104,8 +104,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55844e96add42a24b9021e238f1599ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collider: {fileID: 2986955874607986315}
-  renderer: {fileID: 3012423936800971913}
-  postition: {x: 0, y: 0, z: 0}
-  rotation: {x: 0, y: 0, z: 0, w: 0}
+  Name: Block 1x1
+  color: {r: 0, g: 0, b: 0, a: 0}
+  position: {x: 0, y: 0, z: 0}
+  rotation: {x: 0, y: 0, z: 0}
   prefabName: SM_PolygonPrototype_Buildings_Block_1x1_01P
+  layer: 0

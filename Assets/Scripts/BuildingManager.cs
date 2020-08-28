@@ -6,19 +6,14 @@ using UnityEngine;
 public class BuildingManager : MonoBehaviour
 {
     private GameManager gameManager;
-
-    [SerializeField]
     private Building prevObject = null;
+    private Collider[] hit;
 
     public bool buildingSelected = false;
-
-    public List<GameObject> availableBuildings = new List<GameObject>();
-
-    public Collider[] hit;
-
+    // The color that will be used to color the selected object in the event of an intersection with an obstacle
     public Color intersectingColor;
-    private Color objColor;
 
+    // Variable used to resize OrevlapBox bounds so that it would be just slightly smaller than the object
     public float extentDivider;
 
     private void Start()
@@ -53,13 +48,19 @@ public class BuildingManager : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Preview selected object
+    /// </summary>
+    /// <param name="selectedBuilding">Building ref</param>
     public void PreviewBuilding(GameObject selectedBuilding)
     {
         prevObject = Instantiate(selectedBuilding, gameManager.hitPoint, Quaternion.identity).GetComponent<Building>();
         prevObject.SetRotation((Quaternion.FromToRotation(transform.up, gameManager.faceVector) * transform.rotation).eulerAngles);
         buildingSelected = true;
     }
-
+    /// <summary>
+    /// Move the selected building to match the mouse position
+    /// </summary>
     private void MoveBuilding()
     {
         if(prevObject == null)
@@ -71,6 +72,9 @@ public class BuildingManager : MonoBehaviour
             //prevObject.SetRotation((Quaternion.FromToRotation(prevObject.transform.up, gameManager.faceVector) * prevObject.transform.rotation).eulerAngles);
     }
 
+    /// <summary>
+    /// Finalize the building process (Build it)
+    /// </summary>
     private void BuildBuilding()
     {
         if(prevObject == null)
@@ -81,7 +85,9 @@ public class BuildingManager : MonoBehaviour
         FindObjectOfType<UIManager>().ShowEditor(false);
 
     }
-
+    /// <summary>
+    /// Cancel/Delete currently selected building
+    /// </summary>
     private void CancelBuilding()
     {
         Destroy(prevObject.gameObject);
@@ -89,12 +95,16 @@ public class BuildingManager : MonoBehaviour
         prevObject = null;
         FindObjectOfType<UIManager>().ShowEditor(false);
     }
-
+    /// <summary>
+    /// Checks whether the building is intersecting with something
+    /// </summary>
+    /// <returns>Returns true if the building is intersecting with the ground and.or other buildings</returns>
     private bool IsIntersecting()
     {
         
         hit = Physics.OverlapBox(prevObject.GetCollider().bounds.center, new Vector3(prevObject.GetCollider().bounds.size.x / extentDivider, prevObject.GetCollider().bounds.size.y / extentDivider, prevObject.GetCollider().bounds.size.z / extentDivider), Quaternion.identity);
         
+        Debug.Log("UP: " + (prevObject.transform.up != Vector3.up));
 
         for (int i = 0; i < hit.Length; i++)
         {
@@ -107,21 +117,21 @@ public class BuildingManager : MonoBehaviour
                 }
             }
         }
+
+        if (!prevObject.canBePlacedOnWall && prevObject.transform.up != Vector3.up)
+        {
+            prevObject.SetColor(intersectingColor);
+            return true;
+        }
+
         prevObject.ResetColor();
         return false;
     }
 
-    private void OnDrawGizmos()
-    {
-        if(prevObject != null){
-            Gizmos.color = Color.magenta;
-            Gizmos.DrawCube(prevObject.GetCollider().bounds.center,
-                new Vector3(prevObject.GetCollider().bounds.size.x, prevObject.GetCollider().bounds.size.y,
-                    prevObject.GetCollider().bounds.size.z));
-        }
-    }
-
-
+    /// <summary>
+    /// Enables manipulation of the previously built buildings
+    /// </summary>
+    /// <param name="building">selected building</param>
     public void EditPosition(Building building)
     {
         if(buildingSelected)
@@ -131,7 +141,10 @@ public class BuildingManager : MonoBehaviour
         buildingSelected = true;
         
     }
-
+    /// <summary>
+    /// Rotate selected building on Y axis by either 90 or -90 degree
+    /// </summary>
+    /// <param name="rotateRight">if rotateRight is true, then building will be rotated by 90 degree on Y axis, else rotated by -90 degree on Y axis</param>
     public void RotateBuilding(bool rotateRight)
     {
         if(prevObject == null)

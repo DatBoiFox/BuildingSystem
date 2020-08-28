@@ -105,8 +105,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c25e13dfc8d18243bace63b74c7b63b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collider: {fileID: 168294231448834110}
-  renderer: {fileID: 207687142854116784}
-  postition: {x: 0, y: 0, z: 0}
-  rotation: {x: 0, y: 0, z: 0, w: 0}
+  Name: Cylinder
+  color: {r: 0, g: 0, b: 0, a: 0}
+  position: {x: 0, y: 0, z: 0}
+  rotation: {x: 0, y: 0, z: 0}
   prefabName: SM_PolygonPrototype_Primitive_Cylander_01P
+  layer: 0

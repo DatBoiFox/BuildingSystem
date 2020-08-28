@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4207730842929710931}
   - component: {fileID: 4197997128534243163}
   - component: {fileID: 4249100193730890321}
+  - component: {fileID: 8711953253678070}
   m_Layer: 0
   m_Name: SM_PolygonPrototype_Prop_Crate_03
   m_TagString: Untagged
@@ -92,3 +93,22 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 14
   m_Mesh: {fileID: 4300000, guid: 8dca5595cdaced544b3bca78ca84e8d8, type: 3}
+--- !u!114 &8711953253678070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4184486712061830777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c25e13dfc8d18243bace63b74c7b63b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Crate
+  color: {r: 0, g: 0, b: 0, a: 0}
+  position: {x: 0, y: 0, z: 0}
+  rotation: {x: 0, y: 0, z: 0}
+  prefabName: SM_PolygonPrototype_Prop_Crate_03
+  layer: 0
+  canBePlacedOnWall: 0

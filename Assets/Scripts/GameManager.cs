@@ -5,19 +5,20 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    // Managers
     private BuildingManager buildingManager;
     private UIManager uiManager;
 
+    // Raycast variables
     public LayerMask layerMask;
     public float maxRayDistance;
-
     public Vector3 hitPoint;
-
-    public float gridSize = 1;
-
     public Vector3 faceVector;
-    RaycastHit hit;
+    private RaycastHit hit;
 
+    // Grid size
+    public float gridSize = 1;
+    // Currently targeted object by raycast
     public GameObject targetObject;
 
     private void Start()

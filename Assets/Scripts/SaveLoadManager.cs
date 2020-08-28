@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class SaveLoadManager : MonoBehaviour
 {
-
+    // Gathered building type objects
     public List<Building> buildings = new List<Building>();
 
     public void Save_Game()

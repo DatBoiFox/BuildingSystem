@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
     public GameObject buildingMenu;
-
-    public Button buildingBoxButton;
-    public Button buildingConeButton;
-    public Button buildingCylinderButton;
-
 
     public GameObject editorMenu;
     public Button editorMove;
@@ -26,15 +22,17 @@ public class UIManager : MonoBehaviour
     private Color selectedColor;
 
     // Load Save
-
     public Button saveButton;
     public Button loadButton;
 
+    public GameObject container;
+    public GameObject dynamicButton;
+
+    private Vector3 nextButtonPos;
+
+
     private void Start()
     {
-        buildingBoxButton.onClick.AddListener(delegate { SelectBuilding(FindObjectOfType<BuildingManager>().availableBuildings[0]);});
-        buildingConeButton.onClick.AddListener(delegate { SelectBuilding(FindObjectOfType<BuildingManager>().availableBuildings[1]);});
-        buildingCylinderButton.onClick.AddListener(delegate { SelectBuilding(FindObjectOfType<BuildingManager>().availableBuildings[2]);});
         editorCancel.onClick.AddListener(delegate { ShowEditor(false);
             selectedBuilding = null;
         });
@@ -57,8 +55,13 @@ public class UIManager : MonoBehaviour
 
         saveButton.onClick.AddListener(delegate { FindObjectOfType<SaveLoadManager>().Save_Game();});
         loadButton.onClick.AddListener(delegate { FindObjectOfType<SaveLoadManager>().Load_Game();});
-    }
 
+        PopulateButtons();
+    }
+    /// <summary>
+    /// Selects building for manipulating it
+    /// </summary>
+    /// <param name="building">Building ref</param>
     public void SelectBuilding(GameObject building)
     {
         buildingMenu.SetActive(false);
@@ -82,6 +85,10 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Function used with ColorPicker plugin
+    /// </summary>
+    /// <param name="color"></param>
     public void ChangeColor(Color color)
     {
         if (selectedBuilding != null)
@@ -89,6 +96,27 @@ public class UIManager : MonoBehaviour
             selectedBuilding.SetColor(color);
             selectedColor = color;
         }
+    }
+
+    /// <summary>
+    /// Dynamically populated building selection with available buildings from "Resources/Prefabs" folder
+    /// </summary>
+    private void PopulateButtons()
+    {
+        List<GameObject> items = Resources.LoadAll<GameObject>("Prefabs").ToList();
+        container.GetComponent<RectTransform>().sizeDelta = new Vector2(179.4f, dynamicButton.GetComponent<RectTransform>().rect.height*items.Count);
+        container.GetComponent<RectTransform>().anchoredPosition = new Vector2(-90, -dynamicButton.GetComponent<RectTransform>().rect.height*items.Count);
+        nextButtonPos = new Vector3(container.transform.position.x, container.transform.position.y + (container.GetComponent<RectTransform>().rect.height / 2) + 25, container.transform.position.z);
+        foreach (var item in items)
+        {
+            Button btn = Instantiate(dynamicButton).GetComponent<Button>();
+            btn.transform.SetParent(container.transform, false);
+            nextButtonPos -= new Vector3(0, btn.GetComponent<RectTransform>().rect.height);
+            btn.transform.position = nextButtonPos;
+            btn.transform.GetChild(0).GetComponent<Text>().text = item.GetComponent<Building>().Name;
+            btn.onClick.AddListener(delegate { SelectBuilding(item);});
+        }
+
     }
 
 }
